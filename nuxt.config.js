@@ -20,14 +20,50 @@ export default {
 	/*
 	 * Plugins to load before mounting the App
 	 */
-	plugins: [],
+	plugins: [
+		{ src: '~/plugins/vuemask.client.js', ssr: false }
+	],
+
+	components: true,
 
 	/*
 	 * Nuxt.js dev-modules
 	 */
 	buildModules: [
 		// Doc: https://github.com/nuxt-community/nuxt-tailwindcss
-		'@nuxtjs/tailwindcss'
+		'@nuxtjs/tailwindcss',
+		['nuxt-fontawesome', {
+			component: 'fa', //customize component name
+			imports: [{
+				set: '@fortawesome/free-solid-svg-icons',
+				icons: ['faPlus']
+			},
+			{
+				set: '@fortawesome/free-solid-svg-icons',
+				icons: ['faChevronDown']
+			},
+			{
+				set: '@fortawesome/free-solid-svg-icons',
+				icons: ['faTimes']
+			},
+			{
+				set: '@fortawesome/free-solid-svg-icons',
+				icons: ['faPen']
+			},
+			{
+				set: '@fortawesome/free-regular-svg-icons',
+				icons: ['faTrashAlt']
+			},
+			{
+				set: '@fortawesome/free-solid-svg-icons',
+				icons: ['faExclamationCircle']
+			},
+			{
+				set: '@fortawesome/free-solid-svg-icons',
+				icons: ['faCheck']
+			}
+			]
+		}]
 	],
 
 	/*
@@ -42,7 +78,7 @@ export default {
 		/*
 		 * You can extend webpack config here
 		 */
-		extend (config, ctx) {
+		extend(config, ctx) {
 		}
-	}
+	},
 }
