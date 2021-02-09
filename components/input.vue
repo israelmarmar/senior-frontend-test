@@ -99,5 +99,6 @@ export default {
 input {
   outline: none;
   width: 100%;
+  background-color: transparent;
 }
 </style>
