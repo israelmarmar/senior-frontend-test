@@ -42,7 +42,7 @@
               isOpen ? 'text-white' : '',
             ]"
           >
-            {{ title }}
+            {{ title.slice(0, 20) }}{{ title.length > 20 ? "..." : ""}}
           </p>
           <p
             :class="[
