@@ -62,7 +62,7 @@ export default {
         };
         this.offices = offices;
       } else{
-        this.offices.push({
+        this.offices.unshift({
           title: data.title,
           address: data.address,
           fullname: data.fullname,
