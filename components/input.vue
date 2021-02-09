@@ -6,7 +6,7 @@
     >
     <div
       id="input_container"
-      @click="select"
+      @change="select"
       :class="[
         warningText ? 'ring-danger' : 'ring-input',
         'h-input',
