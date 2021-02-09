@@ -53,7 +53,7 @@
               isOpen ? 'text-white' : 'text-gray-office-card',
             ]"
           >
-            {{ address }}
+            {{ address.slice(0, 30) }}{{ address.length > 30 ? "..." : ""}}
           </p>
         </div>
         <fa
@@ -75,13 +75,13 @@
       <div class="items-center">
         <div class="flex flex-col space-y-sp">
           <p :class="['font-bold', 'text-header', 'text-black']">
-            {{ fullname.slice(0, 13) }}{{fullname.length > 13 ? "..." : ""}}
+            {{ fullname.slice(0, 30) }}{{fullname.length > 30 ? "..." : ""}}
           </p>
           <p :class="['text-black', 'text-sub-header']">
-            {{ job }}
+            {{ job.slice(0, 32) }}{{job.length > 32 ? "..." : ""}}
           </p>
           <p :class="['text-blue-header', 'text-sub-header']">
-            {{ email }}
+            {{ email.slice(0, 32) }}{{email.length > 32 ? "..." : ""}}
           </p>
           <p :class="['text-black', 'text-sub-header']">
             {{ phone }}
