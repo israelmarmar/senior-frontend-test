@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     save(data, index) {
-      if (index) {
+      if (index != null) {
         const offices = [...this.offices];
         offices[index] = {
           title: data.title,
@@ -61,7 +61,7 @@ export default {
           phone: data.phone,
         };
         this.offices = offices;
-      } else
+      } else{
         this.offices.push({
           title: data.title,
           address: data.address,
@@ -70,6 +70,7 @@ export default {
           email: data.email,
           phone: data.phone,
         });
+      }
     },
     remove(index) {
       this.$delete(this.offices, index);
