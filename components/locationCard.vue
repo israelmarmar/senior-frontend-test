@@ -194,7 +194,6 @@ export default {
     },
     titleChange() {
       this.isOpen = true;
-      console.log(this.title);
       if(!this.title || this.title !== null && this.title.length === 0){
         this.titleWarning = emptyField;
       }
