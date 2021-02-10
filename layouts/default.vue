@@ -3,6 +3,7 @@
 </template>
 <style>
 	body{
-		@apply bg-blue-background
+		@apply bg-blue-background;
+		padding-bottom: 100px;
 	}
 </style>
