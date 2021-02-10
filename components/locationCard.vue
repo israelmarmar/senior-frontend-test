@@ -1,5 +1,6 @@
 <template>
   <div
+    v-bind:key="key"
     :class="[
       'overflow-y-hidden',
       'transition-height',
@@ -16,7 +17,6 @@
       'bg-white',
       'flex',
       'flex-col',
-      isWarning ? 'h-location-warning' : '',
       isOpen ? 'h-location' : 'bg-blue-add h-button-location',
     ]"
   >
@@ -27,7 +27,7 @@
       <h3 class="text-sub-header font-bold">
         {{ isEdit ? "Edit Location" : "New Location" }}
       </h3>
-      <button @click="close" class="text-black">
+      <button @click="dropdown" class="text-black">
         <fa :icon="['fas', 'times']" />
       </button>
     </div>
@@ -47,12 +47,14 @@
       v-model="title"
       id="title"
       label="Title"
+      :change="titleChange"
       :warning.sync="titleWarning"
     />
     <Input
       v-model="address"
       id="address"
       label="Enter the address"
+      :change="addressChange"
       :warning.sync="addressWarning"
     />
     <h3 class="text-twelve text-blue-header">CONTACT INFORMATION</h3>
@@ -61,12 +63,14 @@
       v-model="fullname"
       id="fullname"
       label="Full name"
+      :change="fullnameChange"
       :warning.sync="fullnameWarning"
     />
     <Input
       v-model="job"
       id="job"
       label="Job Position"
+      :change="jobChange"
       :warning.sync="jobWarning"
     />
     <Input
@@ -75,6 +79,7 @@
       label="Email address"
       placeholder="name@example.com"
       type="email"
+      :change="emailChange"
       :warning.sync="emailWarning"
     />
     <Input
@@ -83,11 +88,13 @@
       label="Phone"
       placeholder="(xxx) xxx-xxxx"
       type="tel"
+      :change="phoneChange"
       :warning.sync="phoneWarning"
     />
     <button
-      class="bg-blue-add p-save text-white w-save rounded-all"
+      :class="['bg-blue-add p-save text-white w-save rounded-all', check() ? '' : 'opacity-50 bg-disabled']"
       @click="saveAll"
+      :disabled="!check()"
     >
       Save
     </button>
@@ -109,12 +116,12 @@ export default {
       job: "",
       email: "",
       phone: "",
-      titleWarning: null,
-      addressWarning: null,
-      fullnameWarning: null,
-      jobWarning: null,
-      emailWarning: null,
-      phoneWarning: null,
+      titleWarning: emptyField,
+      addressWarning: emptyField,
+      fullnameWarning: emptyField,
+      jobWarning: emptyField,
+      emailWarning: emptyField,
+      phoneWarning: emptyField,
       isOpen: false,
       isEdit: false,
       indexCurr: null
@@ -122,25 +129,26 @@ export default {
   },
   props: {
     save: Function,
-    data: Object
+    data: Object,
+    key: Number
   },
   components: {
     Input,
   },
   methods: {
     reset(){
-      this.title = "";
-      this.address = "";
-      this.fullname = "";
-      this.job = "";
-      this.email = "";
-      this.phone = "";
-      this.titleWarning = null;
-      this.addressWarning = null;
-      this.fullnameWarning = null;
-      this.jobWarning = null;
-      this.emailWarning = null;
-      this.phoneWarning = null;
+      this.title = null;
+      this.address = null;
+      this.fullname = null;
+      this.job = null;
+      this.email = null;
+      this.phone = null;
+      this.titleWarning = emptyField;
+      this.addressWarning = emptyField;
+      this.fullnameWarning = emptyField;
+      this.jobWarning = emptyField;
+      this.emailWarning = emptyField
+      this.phoneWarning = emptyField;
     },
     open(data, index) {
       this.reset();
@@ -163,61 +171,72 @@ export default {
     dropdown() {
       this.isOpen = !this.isOpen;
       this.Edit = false;
-      this.reset();
     },
     check() {
-      if (!isValidEmail(this.email)) this.emailWarning = invalidEmail;
-      if (!isValidPhoneNumber(this.phone)) this.phoneWarning = invalidNumber;
-      if (this.title.length === 0) this.titleWarning = emptyField;
-      if (this.address.length === 0) this.addressWarning = emptyField;
-      if (this.fullname.length === 0) this.fullnameWarning = emptyField;
-      if (this.job.length === 0) this.jobWarning = emptyField;
-      if (this.email.length === 0) this.emailWarning = emptyField;
-      if (this.phone.length === 0) this.phoneWarning = emptyField;
-
       return (
         isValidEmail(this.email) &&
         isValidPhoneNumber(this.phone) &&
-        this.title.length > 0 &&
-        this.address.length > 0 &&
-        this.fullname.length > 0 &&
-        this.job.length > 0 &&
-        this.email.length > 0 &&
-        this.phone.length > 0
+        this.title && this.title.length > 0 &&
+        this.address && this.address.length > 0 &&
+        this.fullname && this.fullname.length > 0 &&
+        this.job && this.job.length > 0 &&
+        this.email && this.email.length > 0 &&
+        this.phone && this.phone.length > 0
       );
     },
     saveAll() {
       if (this.check()) {
         this.save(this.$data, this.indexCurr);
-        this.isOpen = false;
+        this.dropdown();
         this.indexCurr = null;
       }
     },
-  },
-  watch: {
-    title() {
+    titleChange() {
       this.isOpen = true;
-      this.titleWarning = null;
+      if(this.title !== null && this.title.length === 0){
+        this.titleWarning = emptyField;
+      }
+      else
+        this.titleWarning = null;
     },
-    address() {
+    addressChange() {
       this.isOpen = true;
-      this.addressWarning = null;
+      if(this.address !== null && this.address.length === 0)
+        this.addressWarning = emptyField;
+      else
+        this.addressWarning = null;
     },
-    fullname() {
+    fullnameChange() {
       this.isOpen = true;
-      this.fullnameWarning = null;
+      if(this.fullname !== null && this.fullname.length === 0)
+        this.fullnameWarning = emptyField;
+      else
+        this.fullnameWarning = null;
     },
-    job() {
+    jobChange() {
       this.isOpen = true;
-      this.jobWarning = null;
+      if(this.job !== null && this.job.length === 0)
+        this.jobWarning  = emptyField;
+      else
+        this.jobWarning = null;
     },
-    email() {
+    emailChange() {
       this.isOpen = true;
-      this.emailWarning = null;
+      if(this.email != null && !isValidEmail(this.email))
+        this.emailWarning = invalidEmail;
+      else if(this.email !== null && this.email.length === 0)
+        this.emailWarning = emptyField;
+      else
+        this.emailWarning = null;
     },
-    phone() {
+    phoneChange() {
       this.isOpen = true;
-      this.phoneWarning = null;
+      if(this.phone != null && !isValidPhoneNumber(this.phone))
+        this.phoneWarning = invalidNumber;
+      else if(this.phone !== null && this.phone.length === 0)
+        this.phoneWarning = emptyField;
+      else
+        this.phoneWarning = null;
     },
   },
   computed: {

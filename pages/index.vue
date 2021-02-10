@@ -8,6 +8,7 @@
       <div>
         <h1 class="title text-blue-header my-title">Offices</h1>
         <LocationCard
+          :key="componentKey"
           ref="locationcard"
           :isEdit="isEdit"
           :save="save"
@@ -42,6 +43,7 @@ export default {
       isUpdated: false,
       isLocationCardOpen: false,
       isEdit: false,
+      componentKey: 0,
     };
   },
   components: {
@@ -49,7 +51,11 @@ export default {
     LocationCard,
   },
   methods: {
+    forceRerender() {
+      setTimeout(()=>this.componentKey += 1, 500);
+    },
     save(data, index) {
+      this.forceRerender();
       if (index != null) {
         const offices = [...this.offices];
         offices[index] = {

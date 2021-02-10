@@ -6,7 +6,8 @@
     >
     <div
       id="input_container"
-      @change="select"
+      @focusin="select"
+      @focusout="unselect"
       :class="[
         warningText ? 'ring-danger' : 'ring-input',
         'h-input',
@@ -27,7 +28,9 @@
         :value="value"
         :placeholder="placeholder"
         @input="({ target }) => $emit('input', target.value)"
-        @change="select"
+        @focusin="select"
+        @focusout="unselect"
+        @change="onChange"
         v-mask="'(999) 999-9999'"
       />
       <input
@@ -36,7 +39,9 @@
         :id="id"
         :value="value"
         :placeholder="placeholder"
-        @change="select"
+        @focusin="select"
+        @focusout="unselect"
+        @change="onChange"
         @input="({ target }) => $emit('input', target.value)"
       />
       <fa
@@ -79,10 +84,19 @@ export default {
       type: String,
       default: null,
     },
+    change: {
+      type: Function
+    }
   },
   methods: {
+    onChange(event){
+      this.change();
+    },
     select() {
       this.warningText = null;
+    },
+    unselect() {
+      this.warningText = this.warning;
     },
   },
   watch: {
