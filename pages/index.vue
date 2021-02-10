@@ -10,7 +10,6 @@
         <LocationCard
           :rendernumber="componentKey"
           ref="locationcard"
-          :isEdit="isEdit"
           :save="save"
           @input="pageTitle = $event"
         />

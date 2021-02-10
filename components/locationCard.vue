@@ -170,7 +170,7 @@ export default {
     },
     dropdown() {
       this.isOpen = !this.isOpen;
-      this.Edit = false;
+      this.isEdit = false;
       setTimeout(this.reset, 500);
     },
     check() {
