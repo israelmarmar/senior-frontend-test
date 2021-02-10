@@ -6,10 +6,8 @@
     >
     <div
       id="input_container"
-      @focusin="select"
-      @focusout="unselect"
       :class="[
-        warningText ? 'ring-danger' : 'ring-input',
+        warning ? 'ring-danger' : 'ring-input',
         'h-input',
         'p-input',
         'rounded-input',
@@ -28,7 +26,6 @@
         :value="value"
         :placeholder="placeholder"
         @input="({ target }) => $emit('input', target.value)"
-        @focusin="select"
         @focusout="unselect"
         @change="onChange"
         v-mask="'(999) 999-9999'"
@@ -39,29 +36,23 @@
         :id="id"
         :value="value"
         :placeholder="placeholder"
-        @focusin="select"
         @focusout="unselect"
         @change="onChange"
         @input="({ target }) => $emit('input', target.value)"
       />
       <fa
-        v-if="warningText"
+        v-if="warning"
         :icon="['fas', 'exclamation-circle']"
         class="text-danger"
       />
     </div>
-    <p v-if="warningText" class="text-twelve text-danger m-warning">
-      {{ warningText }}
+    <p v-if="warning" class="text-twelve text-danger m-warning">
+      {{ warning }}
     </p>
   </div>
 </template>
 <script>
 export default {
-  data() {
-    return {
-      warningText: null,
-    };
-  },
   props: {
     id: {
       type: String,
@@ -92,16 +83,8 @@ export default {
     onChange(event){
       this.change();
     },
-    select() {
-      this.warningText = null;
-    },
     unselect() {
-      this.warningText = this.warning;
-    },
-  },
-  watch: {
-    warning() {
-      this.warningText = this.warning;
+      this.change();
     },
   },
 };

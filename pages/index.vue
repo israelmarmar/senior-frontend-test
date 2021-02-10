@@ -8,7 +8,7 @@
       <div>
         <h1 class="title text-blue-header my-title">Offices</h1>
         <LocationCard
-          :key="componentKey"
+          :rendernumber="componentKey"
           ref="locationcard"
           :isEdit="isEdit"
           :save="save"
